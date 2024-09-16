@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Group Messanger</title>
+    <link rel="icon" href="assets/logo.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -23,14 +24,17 @@
               class="log_input"
               type="email"
               id="emailLoginId"
+              placeholder="Enter Email"
               name="email"
             /><br />
             <input
-              class="log_input"
+              class="log_input log_password"
               type="password"
               id="passwordLoginId"
+              placeholder="Enter Password"
               name="password"
-            /><br />
+            />
+            <br />
             <center><button type="submit">Sign In</button></center>
           </form>
         </div>
@@ -44,18 +48,21 @@
               class="log_input"
               type="text"
               id="emailRegisterId"
+              placeholder="Enter Email"
               name="email"
             /><br />
             <input
               class="log_input"
               type="text"
               id="nameRegisterId"
+              placeholder="Enter Name"
               name="name"
             /><br />
             <input
               class="log_input"
               type="password"
               id="passwordRegisterId"
+              placeholder="Enter Password"
               name="password"
             /><br />
             <center><button type="submit">Sign Up</button></center>
@@ -67,8 +74,8 @@
     </div>
 
     <div class="footer_div">
-      <form class="type_div">
-        <input class="type_input" />
+      <form class="type_form">
+        <input class="type_input" id="typeInput" autocomplete="off" />
       </form>
     </div>
 
