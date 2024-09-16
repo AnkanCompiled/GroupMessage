@@ -15,6 +15,7 @@ h1 {
 
 input {
   border: none;
+  color: #ddd;
   background-color: #333;
 }
 
@@ -29,6 +30,10 @@ button {
   margin-right: 10px;
   border-radius: 10px;
   min-width: 80px;
+}
+
+button:hover {
+  background-color: #ccc;
 }
 
 .header_div {
@@ -95,7 +100,7 @@ button {
   justify-content: center;
 }
 
-.type_div {
+.type_form {
   min-height: 50px;
   min-width: 50%;
   border-radius: 20px;
@@ -109,6 +114,5 @@ button {
   font-size: 16px;
   margin-left: 10px;
   margin-right: 10px;
-  color: #ddd;
   background-color: hsla(0, 0%, 0%, 0);
 }
