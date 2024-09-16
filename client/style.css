@@ -15,7 +15,7 @@ h1 {
 
 input {
   border: none;
-  background-color: hsla(0, 0%, 0%, 0);
+  background-color: #333;
 }
 
 input:focus {
@@ -25,6 +25,10 @@ input:focus {
 button {
   border: none;
   cursor: pointer;
+  font-size: large;
+  margin-right: 10px;
+  border-radius: 10px;
+  min-width: 80px;
 }
 
 .header_div {
@@ -33,11 +37,42 @@ button {
 
 .navbar_div {
   margin: 0.5%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .loginfo_div {
   display: flex;
   justify-content: flex-end;
+}
+
+.log_overlay {
+  margin-top: 10px;
+  width: 100%;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login_overlay {
+  display: none;
+}
+
+.register_overlay {
+  display: none;
+}
+
+.log_area {
+  padding: 20px;
+  border-radius: 20px;
+  background-color: hsla(0, 0%, 0%, 0.2);
+}
+
+.log_input {
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .body_div {
@@ -75,4 +110,5 @@ button {
   margin-left: 10px;
   margin-right: 10px;
   color: #ddd;
+  background-color: hsla(0, 0%, 0%, 0);
 }
