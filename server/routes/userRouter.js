@@ -25,3 +25,4 @@ try{
     res.status(500).json({status:"Server failed"})
 }
 })
+module.exports= router
