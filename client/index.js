@@ -5,18 +5,25 @@ const typeForm = document.querySelector(".type_form"); //message typing form
 const loginForm = document.getElementById("loginForm"); //login form
 const registerForm = document.getElementById("registerForm"); //register form
 
+const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
 //check if user mongo id saved in local storage
 if (localStorage.getItem("userInfo")) {
   addUserName();
 } else {
   addRegisterBtn();
 }
-
 //adds user name in navbar
 function addUserName() {
   const userName = document.createElement("h1");
-  userName.innerHTML(localStorage.getItem("userInfo")["name"]);
+  userName.innerHTML = JSON.parse(localStorage.getItem("userInfo")).name;
+  userName.style.marginRight = "20px";
   loginInfoDiv.append(userName);
+  const logoutBtn = document.createElement("button");
+  logoutBtn.id = "logoutBtn";
+  logoutBtn.innerHTML = "Logout";
+  logoutBtn.style.backgroundColor = "crimson";
+  loginInfoDiv.append(logoutBtn);
 }
 
 //adds sign in and sign up button in navbar
@@ -31,36 +38,67 @@ function addRegisterBtn() {
 }
 
 //sign in button click
-document.getElementById("loginBtn").addEventListener("click", () => {
-  loginBox.style.display = "flex";
-  registerBox.style.display = "none";
-});
+if (document.getElementById("loginBtn")) {
+  document.getElementById("loginBtn").addEventListener("click", () => {
+    loginBox.style.display = "flex";
+    registerBox.style.display = "none";
+  });
+}
 
 //sign up button click
-document.getElementById("registerBtn").addEventListener("click", () => {
-  loginBox.style.display = "none";
-  registerBox.style.display = "flex";
-});
+if (document.getElementById("registerBtn")) {
+  document.getElementById("registerBtn").addEventListener("click", () => {
+    loginBox.style.display = "none";
+    registerBox.style.display = "flex";
+  });
+}
+
+//logout button click
+if (document.getElementById("logoutBtn")) {
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    console.log("logout");
+    localStorage.removeItem("userInfo");
+    window.location.reload();
+  });
+}
 
 //type form submit
 typeForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const text = document.getElementById("typeInput").value;
-  console.log(text);
 });
 
-//check if name and password entered in Register
+//register status text
+function registerStatus(color = "#ddd", message = "") {
+  document.getElementById("statusRegisterId").style.color = color;
+  document.getElementById("statusRegisterId").innerHTML = message;
+}
+
+//check if email, name and password entered in Register
+document
+  .getElementById("emailRegisterId")
+  .addEventListener("input", (event) => {
+    registerStatus();
+    if (emailRegex.test(event.target.value)) {
+      registerButtonEnable();
+    } else {
+      registerStatus("crimson", "Email Syntax Error");
+    }
+  });
 document.getElementById("nameRegisterId").addEventListener("input", (event) => {
-  registerButtonEnable(event.target.value);
+  registerStatus();
+  registerButtonEnable();
 });
 document
   .getElementById("passwordRegisterId")
   .addEventListener("input", (event) => {
-    registerButtonEnable(event.target.value);
+    registerStatus();
+    registerButtonEnable();
   });
 
 function registerButtonEnable() {
   if (
+    document.getElementById("emailRegisterId").value &&
     document.getElementById("nameRegisterId").value &&
     document.getElementById("passwordRegisterId").value
   ) {
@@ -80,17 +118,16 @@ registerForm.addEventListener("submit", (event) => {
 async function dataEntry() {
   const data = await addtoMongo();
   if (data.status == "User Created") {
-    document.getElementById("statusRegisterId").innerHTML =
-      "Register Successfull";
+    registerStatus("yellowgreen", "Register Successfully");
     setTimeout(() => {
       window.location.reload();
     }, 500);
   } else {
-    document.getElementById("statusRegisterId").innerHTML = data.status;
+    registerStatus("crimson", data.status);
   }
 }
 
-//fetch request for post to mongoDB
+//fetch request for post to mongoDB in register
 async function addtoMongo() {
   try {
     const res = await fetch("http://localhost:3001/signup", {
@@ -106,7 +143,80 @@ async function addtoMongo() {
     });
 
     const data = await res.json();
-    console.log(data);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+//login status text
+function loginStatus(color = "#ddd", message = "") {
+  document.getElementById("statusLoginId").style.color = color;
+  document.getElementById("statusLoginId").innerHTML = message;
+}
+
+//check if email and password entered in Login
+document.getElementById("emailLoginId").addEventListener("input", (event) => {
+  loginStatus();
+  if (emailRegex.test(event.target.value)) {
+    loginButtonEnable();
+  } else {
+    loginStatus("crimson", "Email Syntax Error");
+  }
+});
+document
+  .getElementById("passwordLoginId")
+  .addEventListener("input", (event) => {
+    loginStatus();
+    loginButtonEnable();
+  });
+
+function loginButtonEnable() {
+  if (
+    document.getElementById("emailLoginId").value &&
+    document.getElementById("passwordLoginId").value
+  ) {
+    document.getElementById("buttonLoginId").disabled = false;
+  } else {
+    document.getElementById("buttonLoginId").disabled = true;
+  }
+}
+
+//Login form submit click
+loginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  dataCheck();
+});
+
+//check login email , password from mongoDB
+async function dataCheck() {
+  const data = await checkMongo();
+  if (data.status == "Login Successfully") {
+    loginStatus("yellowgreen", "Login Successfully");
+    localStorage.setItem("userInfo", JSON.stringify(data));
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  } else {
+    loginStatus("crimson", data.status);
+  }
+}
+
+//fetch request for post to mongoDB in login
+async function checkMongo() {
+  try {
+    const res = await fetch("http://localhost:3001/login", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        email: document.getElementById("emailLoginId").value,
+        password: document.getElementById("passwordLoginId").value,
+      }),
+    });
+
+    const data = await res.json();
     return data;
   } catch (err) {
     console.error(err);
