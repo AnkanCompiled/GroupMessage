@@ -10,5 +10,7 @@ A website where people can chat together.
 
 # Create
 
-1. connection/config.js file and add mongoURI in module.exports
+1. connection/config.js file and add mongoUri in module.exports
 2. /signup for register
+3. /login for login
+4. /chats for geting chats
