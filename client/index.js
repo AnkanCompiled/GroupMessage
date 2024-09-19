@@ -79,14 +79,14 @@ registerForm.addEventListener("submit", (event) => {
 //send register email , name , password to mongoDB
 async function dataEntry() {
   const data = await addtoMongo();
-  if (data.message == "success") {
+  if (data.status == "User Created") {
     document.getElementById("statusRegisterId").innerHTML =
       "Register Successfull";
     setTimeout(() => {
       window.location.reload();
     }, 500);
   } else {
-    document.getElementById("statusRegisterId").innerHTML = "Email Exists";
+    document.getElementById("statusRegisterId").innerHTML = data.status;
   }
 }
 
@@ -104,10 +104,10 @@ async function addtoMongo() {
         password: document.getElementById("passwordRegisterId").value,
       }),
     });
-    if (res.ok) {
-      const data = await res.json();
-      return data;
-    }
+
+    const data = await res.json();
+    console.log(data);
+    return data;
   } catch (err) {
     console.error(err);
   }
