@@ -25,4 +25,21 @@ try{
     res.status(500).json({status:"Server failed"})
 }
 })
+router.post('/login',async (req,res)=>{
+    try{
+        const email = req.body.email
+        const password =req.body.password
+        const entry = await USER.findOne({email:email})
+        if(!entry) return res.json({msg:"user doses not exist"})
+        if(password===entry.password){
+            return res.status(200).json({status:"login succesful"})
+        }else{
+            return res.json({status:"wrong password"})
+        }
+
+    }catch(err){
+        return res.status(500).json(err)
+    }
+    
+})
 module.exports= router
