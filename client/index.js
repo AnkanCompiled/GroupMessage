@@ -193,7 +193,11 @@ async function dataCheck() {
   const data = await checkMongo();
   if (data.status == "Login Successfully") {
     loginStatus("yellowgreen", "Login Successfully");
-    localStorage.setItem("userInfo", JSON.stringify(data));
+    const localData = {
+      name: data.name,
+      id: data.id,
+    };
+    localStorage.setItem("userInfo", JSON.stringify(localData));
     setTimeout(() => {
       window.location.reload();
     }, 500);
