@@ -1,2 +1,2 @@
-/node modules
-/connection/config.js
+node_modules/
+connection/config.js
