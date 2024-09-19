@@ -10,19 +10,7 @@ mongodbConnect(mongoUri);
 
 
 
-app.get('/',(req,res)=>{
-const body = {
-    name:"arif",
-    email:"lalalala",
-    password:"65544"
-}
 
-const data = new User(body)
-data.save()
-.then(user=>res.status(201).json({msg:"lala"}));
-
-
-})
 
 
 
