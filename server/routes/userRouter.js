@@ -12,20 +12,19 @@ router.post("/signup", async (req, res) => {
   try {
     const body = req.body;
     if (!body) {
-      res.json({ status: "bad request" });
+      res.json({ status: "Bad Request" });
     }
     //if user is already a signed up user
     const entry = await USER.findOne({ email: body.email });
-    console.log(Boolean(entry), entry);
     if (entry) {
-      res.json({ status: "user already present" });
+      res.json({ status: "User Already Present" });
     } else {
       //if no a reg user then sign up is created
       const newUser = new USER(req.body);
-      newUser.save().then(res.status(201).json({ status: "user created" }));
+      newUser.save().then(res.status(201).json({ status: "User Created" }));
     }
   } catch (err) {
-    res.status(500).json({ status: "Server failed" });
+    res.status(500).json({ status: "Server Failed" });
   }
 });
 router.post("/login", async (req, res) => {
@@ -33,13 +32,18 @@ router.post("/login", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const entry = await USER.findOne({ email: email });
-    if (!entry) return res.json({ status: "user doses not exist" });
-    if (password === entry.password) {
-      return res
-        .status(200)
-        .json({ status: "login successfull", name: entry.name });
+    if (entry) {
+      if (password === entry.password) {
+        return res.status(200).json({
+          status: "Login Successfully",
+          name: entry.name,
+          id: entry._id,
+        });
+      } else {
+        res.json({ status: "Wrong Password" });
+      }
     } else {
-      return res.json({ status: "wrong password" });
+      res.json({ status: "Email Doses Not Exist" });
     }
   } catch (err) {
     return res.status(500).json(err);
