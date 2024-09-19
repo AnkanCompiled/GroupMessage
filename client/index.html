@@ -35,7 +35,9 @@
               name="password"
             />
             <br />
-            <center><button type="submit">Sign In</button></center>
+            <center>
+              <button type="submit" id="buttonLoginId">Sign In</button>
+            </center>
           </form>
         </div>
       </div>
@@ -43,7 +45,7 @@
       <div class="log_overlay register_overlay">
         <div class="log_area">
           <h2>Register</h2>
-          <form id="RegisterForm">
+          <form id="registerForm">
             <input
               class="log_input"
               type="text"
@@ -65,7 +67,12 @@
               placeholder="Enter Password"
               name="password"
             /><br />
-            <center><button type="submit">Sign Up</button></center>
+            <center>
+              <button type="submit" id="buttonRegisterId" disabled>
+                Sign Up
+              </button>
+            </center>
+            <p id="statusRegisterId"></p>
           </form>
         </div>
       </div>
