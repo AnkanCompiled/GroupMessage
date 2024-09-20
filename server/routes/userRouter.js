@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const USER = require("../model/Register");
+const TEXT = require("../model/chat");
 /* 
 wrote a sign up service where 
 --first the body is checked if no body then a bad request
@@ -49,4 +50,49 @@ router.post("/login", async (req, res) => {
     return res.status(500).json(err);
   }
 });
+/** 
+ chat user id and text ;
+*/
+
+router.post('/chat', async(req,res)=>{
+  try{
+    const body = req.body;
+    if(!body)res.status(400).json({status:"body not given "})
+    
+      const newEntry = new TEXT(body);
+      newEntry.save()
+      res.status(201).json({status:"sent"})
+    
+  }catch(err){
+    res.status(500).json({status:`${err}`})
+  }
+  
+})
+/*
+returns all the text based on the user 
+*/
+
+router.get('/chat',async(req,res)=>{
+  try{
+      const response = await TEXT.find({});
+      if(!response)res.status(404).json({status:"user not found"})
+      //else part
+      res.status(200).json(response);
+      
+  }catch(err){
+    res.status(500).json({status:`${err}`})
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;
