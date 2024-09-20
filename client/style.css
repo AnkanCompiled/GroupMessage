@@ -9,6 +9,10 @@ body {
   min-height: 100vh;
 }
 
+p {
+  font-size: 24px;
+}
+
 h1 {
   margin: 0;
 }
@@ -34,6 +38,19 @@ button {
 
 button:hover {
   background-color: #ccc;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1d1d1d;
 }
 
 .header_div {
@@ -93,6 +110,19 @@ button:hover {
   position: absolute;
   top: 0;
   left: 0;
+  overflow-y: auto;
+}
+.chat_div {
+  display: flex;
+  margin-bottom: 0.5%;
+}
+
+.chat_box {
+  border-radius: 20px;
+  background-color: #1d1d1d;
+  padding: 1%;
+  margin-left: 1%;
+  margin-right: 1%;
 }
 
 .footer_div {
