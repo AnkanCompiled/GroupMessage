@@ -4,9 +4,9 @@ A website where people can chat together.
 
 # Team
 
--Ankan Biswas
--Arif Islam
--Sanmitra Dutta
+-Ankan Biswas(ankanb560@gmail.com)
+-Arif Islam(arifislamm2003@gmail.com)
+-Sanmitra Dutta(sanmitradutta24@gmail.com)
 
 # Create
 
