@@ -10,6 +10,16 @@ const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 let chats = [];
 
+//check if user mongo id saved in local storage
+if (localStorage.getItem("userInfo")) {
+  typeForm.style.display = "grid";
+  addUserName();
+} else {
+  typeForm.style.display = "none";
+  addRegisterBtn();
+}
+
+//interval for getting messages
 setInterval(() => {
   getChat();
 }, 500);
@@ -24,8 +34,11 @@ async function getChat() {
   }
 }
 
+//add messages to div
 async function addTextToDiv(data) {
-  const localID = JSON.parse(localStorage.getItem("userInfo")).id;
+  const localID = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo")).id
+    : null;
   data.forEach((element) => {
     const textDiv = document.createElement("div");
     textDiv.className = "chat_div";
@@ -48,10 +61,12 @@ async function addTextToDiv(data) {
   });
 }
 
+//set messages in div to null
 async function refreshChats() {
   messageDiv.innerHTML = "";
 }
 
+//get messages from mongo
 async function getChatFromMongo() {
   try {
     const res = await fetch("http://localhost:3001/chats");
@@ -62,12 +77,6 @@ async function getChatFromMongo() {
   }
 }
 
-//check if user mongo id saved in local storage
-if (localStorage.getItem("userInfo")) {
-  addUserName();
-} else {
-  addRegisterBtn();
-}
 //adds user name in navbar
 function addUserName() {
   const userName = document.createElement("h1");
