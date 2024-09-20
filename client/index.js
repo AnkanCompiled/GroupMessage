@@ -4,8 +4,45 @@ const registerBox = document.querySelector(".register_overlay"); //Register Box 
 const typeForm = document.querySelector(".type_form"); //message typing form
 const loginForm = document.getElementById("loginForm"); //login form
 const registerForm = document.getElementById("registerForm"); //register form
+const messageDiv = document.querySelector(".messages_div");
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+let chats = [];
+
+setInterval(() => {
+  getChat();
+}, 500);
+
+async function getChat() {
+  const data = await getChatFromMongo();
+  console.log("datas:", data, "chats", chats);
+  if (data.length != chats.length) {
+    chats = data;
+    await refreshChats();
+    data.forEach((element) => {
+      const name = document.createElement("h1");
+      name.innerHTML = element.name;
+      const message = document.createElement("h1");
+      message.innerHTML = element.text;
+      messageDiv.append(name, message);
+    });
+  }
+}
+
+async function refreshChats() {
+  messageDiv.innerHTML = "";
+}
+
+async function getChatFromMongo() {
+  try {
+    const res = await fetch("http://localhost:3001/chats");
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 //check if user mongo id saved in local storage
 if (localStorage.getItem("userInfo")) {
@@ -77,6 +114,8 @@ async function chatToMongo() {
       },
       method: "POST",
       body: JSON.stringify({
+        name: JSON.parse(localStorage.getItem("userInfo")).name,
+        userid: JSON.parse(localStorage.getItem("userInfo")).id,
         text: document.getElementById("typeInput").value,
       }),
     });
