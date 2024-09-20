@@ -54,45 +54,31 @@ router.post("/login", async (req, res) => {
  chat user id and text ;
 */
 
-router.post('/chat', async(req,res)=>{
-  try{
+router.post("/chats", async (req, res) => {
+  try {
     const body = req.body;
-    if(!body)res.status(400).json({status:"body not given "})
-    
-      const newEntry = new TEXT(body);
-      newEntry.save()
-      res.status(201).json({status:"sent"})
-    
-  }catch(err){
-    res.status(500).json({status:`${err}`})
+    if (!body) res.status(400).json({ status: "body not given " });
+
+    const newEntry = new TEXT(body);
+    newEntry.save();
+    res.status(201).json({ status: "sent" });
+  } catch (err) {
+    res.status(500).json({ status: `${err}` });
   }
-  
-})
+});
 /*
 returns all the text based on the user 
 */
 
-router.get('/chat',async(req,res)=>{
-  try{
-      const response = await TEXT.find({});
-      if(!response)res.status(404).json({status:"user not found"})
-      //else part
-      res.status(200).json(response);
-      
-  }catch(err){
-    res.status(500).json({status:`${err}`})
+router.get("/chats", async (req, res) => {
+  try {
+    const response = await TEXT.find({});
+    if (!response) res.status(404).json({ status: "user not found" });
+    //else part
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json({ status: `${err}` });
   }
-})
-
-
-
-
-
-
-
-
-
-
-
+});
 
 module.exports = router;
