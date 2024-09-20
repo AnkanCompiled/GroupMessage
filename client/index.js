@@ -25,7 +25,9 @@ async function getChat() {
 }
 
 async function addTextToDiv(data) {
-  const localID = JSON.parse(localStorage.getItem("userInfo")).id;
+  const localID = localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo")).id
+    : null;
   data.forEach((element) => {
     const textDiv = document.createElement("div");
     textDiv.className = "chat_div";
