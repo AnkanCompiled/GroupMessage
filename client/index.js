@@ -65,8 +65,25 @@ if (document.getElementById("logoutBtn")) {
 //type form submit
 typeForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  const text = document.getElementById("typeInput").value;
+  chatToMongo();
 });
+
+//fetch request for post to mongoDB in chat
+async function chatToMongo() {
+  try {
+    await fetch("http://localhost:3001/chats", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        text: document.getElementById("typeInput").value,
+      }),
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 //register status text
 function registerStatus(color = "#ddd", message = "") {
