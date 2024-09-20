@@ -131,6 +131,7 @@ button:hover {
 }
 
 .type_form {
+  display: flex;
   min-height: 50px;
   min-width: 50%;
   border-radius: 20px;
@@ -139,10 +140,18 @@ button:hover {
 }
 
 .type_input {
-  min-width: 95%;
+  min-width: 90%;
   min-height: 100%;
   font-size: 16px;
   margin-left: 10px;
   margin-right: 10px;
+  background-color: hsla(0, 0%, 0%, 0);
+}
+
+.type_button {
+  background-color: hsla(0, 0%, 0%, 0);
+}
+
+.type_button:hover {
   background-color: hsla(0, 0%, 0%, 0);
 }

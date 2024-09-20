@@ -137,6 +137,7 @@ async function chatToMongo() {
         text: document.getElementById("typeInput").value,
       }),
     });
+    document.getElementById("typeInput").value = "";
   } catch (err) {
     console.error(err);
   }
