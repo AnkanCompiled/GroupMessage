@@ -16,18 +16,36 @@ setInterval(() => {
 
 async function getChat() {
   const data = await getChatFromMongo();
-  console.log("datas:", data, "chats", chats);
   if (data.length != chats.length) {
     chats = data;
     await refreshChats();
-    data.forEach((element) => {
-      const name = document.createElement("h1");
-      name.innerHTML = element.name;
-      const message = document.createElement("h1");
-      message.innerHTML = element.text;
-      messageDiv.append(name, message);
-    });
+    await addTextToDiv(data);
+    messageDiv.scrollTop = messageDiv.scrollHeight;
   }
+}
+
+async function addTextToDiv(data) {
+  const localID = JSON.parse(localStorage.getItem("userInfo")).id;
+  data.forEach((element) => {
+    const textDiv = document.createElement("div");
+    textDiv.className = "chat_div";
+
+    const textBox = document.createElement("div");
+    textBox.className = "chat_box";
+    const name = document.createElement("p");
+    name.innerHTML = element.name;
+    name.style.color = "grey";
+    name.style.fontSize = "16px";
+    const text = document.createElement("p");
+    text.innerHTML = element.text;
+    if (element.userid == localID) {
+      textDiv.style.justifyContent = "end";
+      textBox.style.textAlign = "right";
+    }
+    textBox.append(name, text);
+    textDiv.append(textBox);
+    messageDiv.append(textDiv);
+  });
 }
 
 async function refreshChats() {
