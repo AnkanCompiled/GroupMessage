@@ -1,3 +1,5 @@
+import { io } from "socket.io-client";
+
 const loginInfoDiv = document.querySelector(".loginfo_div"); //Sign Up Button Div
 const loginBox = document.querySelector(".login_overlay"); //Login Box Overlay
 const registerBox = document.querySelector(".register_overlay"); //Register Box Overlay
@@ -8,7 +10,21 @@ const messageDiv = document.querySelector(".messages_div");
 
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-let chats = [];
+const socket = io("http://localhost:3001");
+
+getChat();
+
+socket.on("receive_message", (name, id, text) => {
+  const data = [
+    {
+      name: name,
+      userid: id,
+      text: text,
+    },
+  ];
+  addTextToDiv(data);
+  messageDiv.scrollTop = messageDiv.scrollHeight;
+});
 
 //check if user mongo id saved in local storage
 if (localStorage.getItem("userInfo")) {
@@ -19,19 +35,11 @@ if (localStorage.getItem("userInfo")) {
   addRegisterBtn();
 }
 
-//interval for getting messages
-setInterval(() => {
-  getChat();
-}, 500);
-
 async function getChat() {
   const data = await getChatFromMongo();
-  if (data.length != chats.length) {
-    chats = data;
-    await refreshChats();
-    await addTextToDiv(data);
-    messageDiv.scrollTop = messageDiv.scrollHeight;
-  }
+  await refreshChats();
+  await addTextToDiv(data);
+  messageDiv.scrollTop = messageDiv.scrollHeight;
 }
 
 //add messages to div
@@ -135,15 +143,19 @@ typeForm.addEventListener("submit", (event) => {
 //fetch request for post to mongoDB in chat
 async function chatToMongo() {
   try {
+    const localName = JSON.parse(localStorage.getItem("userInfo")).name;
+    const localID = JSON.parse(localStorage.getItem("userInfo")).id;
+    const text = document.getElementById("typeInput").value;
+    socket.emit("new_message", localName, localID, text);
     await fetch("http://localhost:3001/chats", {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
       body: JSON.stringify({
-        name: JSON.parse(localStorage.getItem("userInfo")).name,
-        userid: JSON.parse(localStorage.getItem("userInfo")).id,
-        text: document.getElementById("typeInput").value,
+        name: localName,
+        userid: localID,
+        text: text,
       }),
     });
     document.getElementById("typeInput").value = "";
